@@ -16,8 +16,8 @@ let loadData =
 
 let isValid  (passdata: PassData) = 
     let countOfChars = Seq.toArray passdata.password |>
-        Array.filter(fun c -> c.Equals(passdata.character)) |>
-        Array.length
+                            Array.filter(fun c -> c.Equals(passdata.character)) |>
+                            Array.length
     countOfChars >= passdata.min && countOfChars <= passdata.max
 
 let isValidUpdated  (passdata: PassData) = 
@@ -26,6 +26,6 @@ let isValidUpdated  (passdata: PassData) =
     first <> second
 
 let coutOfValid validationFn = loadData |>
-    Seq.filter(validationFn) |>
-    Seq.length
+                                    Seq.filter(validationFn) |>
+                                    Seq.length
     
