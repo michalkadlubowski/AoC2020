@@ -7,7 +7,7 @@ type PassData = {min: int; max: int; character: char; password: string;}
 
 let loadData = 
     readLines("data\\02-01.txt") |>
-    Seq.map(fun s -> Regex.Match(s,@"(\d*)\-(\d*)\s(.):\s(\w+)")) |>
+    Seq.map(fun s -> Regex.Match(s, @"(\d*)\-(\d*)\s(.):\s(\w+)")) |>
     Seq.map(fun r -> { 
         min = System.Int32.Parse(r.Groups.[1].Value);
         max =  System.Int32.Parse(r.Groups.[2].Value);
