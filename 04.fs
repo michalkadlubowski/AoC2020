@@ -19,15 +19,6 @@ let mapLinesToProps (input: seq<string>) : Document =
     input |>
         Seq.collect(getProps) |> Seq.toArray
 
-let splitSeq (splitToken : string) input =
-    let i = ref 0
-    input |>
-        Seq.map(fun x ->
-                    if x = splitToken then incr i
-                    !i, x) |>
-        Seq.groupBy fst |>
-        Seq.map(fun (_,x) -> Seq.map snd x |> Seq.filter (fun s -> s<> splitToken))
-
 let valdateBetweenValues (input:string) (min:int) (max:int)=
      match Int32.TryParse input with
         | true, value -> min <= value && value <= max
