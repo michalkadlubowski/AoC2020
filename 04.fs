@@ -26,7 +26,7 @@ let valdateBetweenValues (input:string) (min:int) (max:int)=
 
 let mapInput (input: seq<string>) : seq<Document> = 
     input |>
-        splitSeq "" |>
+        splitSeq (fun x-> x = "") |>
         Seq.map(mapLinesToProps)
 
 let validateByr (input:string) =
