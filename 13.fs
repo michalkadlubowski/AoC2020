@@ -26,6 +26,6 @@ let rec solve2 (data:(int64*int64)[]) (ts:int64) (lcm:int64) : int64 =
     if ((Array.length data) = 1) then nextMatchingTs else  solve2 data.[1..] nextMatchingTs nextLcm
 
 let solution2 () =
-    let data = readLines("data\\13-01.txt") |> Seq.toArray |> mapToTimesWithOffsets |> 
-        Array.map(fun x -> (int64 (fst x), int64 (snd x)))
+    let data = readLines("data\\13-01.txt") |> Seq.toArray |>
+                 mapToTimesWithOffsets |> Array.map(fun x -> (int64 (fst x), int64 (snd x)))
     solve2 data 0L 1L

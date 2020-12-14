@@ -28,3 +28,6 @@ let lcm a b = a*b/(gcd a b)
 
 let lcmOfSeq nums =
     nums |> Seq.fold(fun acc n -> lcm acc (int64 n)) 1L
+
+let cartesian xs ys = 
+    xs |> List.collect (fun x -> ys |> List.map (fun y -> x, y))
