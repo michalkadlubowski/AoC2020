@@ -10,6 +10,10 @@ let readLines (filePath:string) = seq {
         yield sr.ReadLine ()
 }
 
+let readLine (filePath:string) =
+    use sr = new StreamReader (filePath)
+    sr.ReadLine ()
+
 let splitSeq (splitFn) input =
     let i = ref 0
     input |>
