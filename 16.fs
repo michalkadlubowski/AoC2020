@@ -1,6 +1,5 @@
 module day16
 
-open utils
 open System
 open System.Collections.Generic
 open System.Text.RegularExpressions

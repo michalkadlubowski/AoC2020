@@ -1,6 +1,5 @@
 module day3
 
-open utils
 open System
 open Microsoft.FSharp.Core.Operators.Checked
 
@@ -26,7 +25,6 @@ let loadDataAsTerrainGrid () =
                         Seq.map(fun l -> l.ToCharArray() |> Seq.map(convetToUnon) |> Seq.toArray) |>
                         Seq.toArray
     Array2D.init (Seq.length terrainRows) (terrainRows.[0] |> Array.length) (fun x y -> terrainRows.[x].[y])
-
 
 let path maxIndex right down = seq {
             for i in 1..((maxIndex-1)/down) do

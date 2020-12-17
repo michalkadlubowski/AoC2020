@@ -1,6 +1,5 @@
 module day4
 
-open utils
 open System
 open System.Text.RegularExpressions
 

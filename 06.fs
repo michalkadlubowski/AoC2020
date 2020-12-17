@@ -1,6 +1,5 @@
 module day6
 
-open utils
 open System
 open System.Linq
 

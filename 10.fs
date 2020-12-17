@@ -1,6 +1,5 @@
 module day10
 
-open utils
 open System
 
 let getPossibilitiesFromPosition (position: int) (joltages: int[]): (int[])=    

@@ -1,6 +1,5 @@
 module day5
 
-open utils
 open System
 
 let toBinaryString (input:string) : string = 

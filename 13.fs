@@ -1,6 +1,5 @@
 module day13
 
-open utils
 open System
             
 let mapToSchedule (lines:string[]) =

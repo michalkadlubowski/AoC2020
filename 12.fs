@@ -1,6 +1,5 @@
 module day12
 
-open utils
 open System
 
 type Direction = N | S | W | E

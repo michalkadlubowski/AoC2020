@@ -1,6 +1,5 @@
 module day11
 
-open utils
 open System
     
 type Tile = OccupiedSeat | EmptySeat | Floor

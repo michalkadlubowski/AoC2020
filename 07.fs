@@ -1,6 +1,5 @@
 module day7
 
-open utils
 open System
 
 type BagInfo = string * Set<int * string>

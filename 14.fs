@@ -1,6 +1,5 @@
 module day14
 
-open utils
 open System
 open System.Text.RegularExpressions
 open Microsoft.FSharp.Core.Operators.Checked

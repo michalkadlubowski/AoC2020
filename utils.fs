@@ -1,3 +1,4 @@
+[<AutoOpen>]
 module utils 
 
 open System.IO
@@ -34,3 +35,13 @@ let lcmOfSeq nums =
 
 let cartesian xs ys = 
     xs |> List.collect (fun x -> ys |> List.map (fun y -> x, y))
+
+let rec cartesianLstLst lstlst =
+    match lstlst with
+    | h::[] ->
+        List.fold (fun acc elem -> [elem]::acc) [] h
+    | h::t ->
+        List.fold (fun cacc celem ->
+            (List.fold (fun acc elem -> (elem::celem)::acc) [] h) @ cacc
+            ) [] (cartesianLstLst t)
+    | _ -> []    

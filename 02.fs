@@ -1,6 +1,5 @@
 module day2
 
-open utils
 open System.Text.RegularExpressions
 
 type PassData = {min: int; max: int; character: char; password: string;}

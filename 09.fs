@@ -1,6 +1,5 @@
 module day9
 
-open utils
 open System
     
 let isValid  (countToCheck: int) (existingNumbers: Int64[]) (numberToAdd: Int64): bool =

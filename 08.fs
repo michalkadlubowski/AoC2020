@@ -1,6 +1,5 @@
 module day8
 
-open utils
 open System
 
 let [<Literal>] NOP = "nop"
