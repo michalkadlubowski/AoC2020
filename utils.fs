@@ -45,3 +45,19 @@ let rec cartesianLstLst lstlst =
             (List.fold (fun acc elem -> (elem::celem)::acc) [] h) @ cacc
             ) [] (cartesianLstLst t)
     | _ -> []    
+
+let product (seq1:'a seq) (seq2:'a seq seq) =
+    seq { for item1 in seq1 do
+              for item2 in seq2 do
+                  yield item1 |> Seq.singleton |> Seq.append item2 }
+
+let productn (s:seq<#seq<'a>>) =
+    s |> Seq.fold (fun r s -> r |> product s) (seq { yield Seq.empty })
+
+let chunkStr size str =
+    let rec loop (s:string) accum =
+        let branch = size < s.Length
+        match branch with
+        | true  -> loop (s.[size..]) (s.[0..size-1]::accum)
+        | false -> s::accum
+    (loop str []) |> List.rev    
