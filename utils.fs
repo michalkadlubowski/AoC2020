@@ -61,3 +61,4 @@ let chunkStr size str =
         | true  -> loop (s.[size..]) (s.[0..size-1]::accum)
         | false -> s::accum
     (loop str []) |> List.rev    
+ 
