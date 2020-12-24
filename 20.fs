@@ -21,32 +21,52 @@ let getMappedInput () =
     mapped
 
 let rotateTile (tile:Tile) =
-    tile
-
+    let oldArray = tile.Grid
+    let height, width = Array2D.length1 oldArray, Array2D.length2 oldArray
+    let newGird = Array2D.init width height (fun row column -> Array2D.get oldArray (height - column - 1) row)
+    { Number = tile.Number; Grid = newGird }
+    
 let flipTile tile = 
     let oldArray = tile.Grid
-    let newArray = Array2D.init (oldArray |> Array2D.length2) (oldArray |> Array2D.length1) (fun r c -> oldArray.[c,r])
+    let len = tile.Grid |> Array2D.length1
+    let maxIndex = len-1
+    let newArray = Array2D.init (oldArray |> Array2D.length2) (oldArray |> Array2D.length1) (fun r c -> oldArray.[r,maxIndex-c])
     { Number = tile.Number; Grid = newArray }
 
 let mapTilesToPossibilities tile =
     seq {
+        yield tile
         let rotated1 = rotateTile tile
         yield rotated1
-        let rotated2 = rotateTile tile
+        let rotated2 = rotateTile rotated1
         yield rotated2
-        let rotated3 = rotateTile tile
+        let rotated3 = rotateTile rotated2
         yield rotated3
-        //let flipped = flipTile tile
-        
+        let flipped = flipTile tile
+        yield flipped
+        let flippedRotated1 = rotateTile flipped
+        yield flippedRotated1
+        let flippedRotated2 = rotateTile flippedRotated1
+        yield flippedRotated2
+        let flippedRotated3 = rotateTile flippedRotated2
+        yield flippedRotated3
     }
 
-let backTrack tilesMappes tilesToomap =
+let backTrack (possibilities:(int * Tile seq) seq) =
+    // TODO
     0
 
+let printTile (tile:Tile) = 
+    printfn "%s" ""
+    for r = 0 to Array2D.length1 tile.Grid - 1 do
+        printfn "%s" ""
+        for c = 0 to Array2D.length2 tile.Grid - 1 do
+            printf "%c" tile.Grid.[r, c]
 
 let solution1 () =
-    let tiles = getMappedInput()
-    0
+    let possibilities = getMappedInput() |> Array.map(fun x -> (x.Number,mapTilesToPossibilities x))
+    let res = backTrack possibilities
+    res
 
 let solution2 () =
     0
