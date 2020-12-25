@@ -2,7 +2,7 @@
 module AoC2020
 
 open System
-open day25
+open day20
 
 
 [<EntryPoint>]
