@@ -116,25 +116,77 @@ let solve (possibilities:(int * Tile seq) seq)=
     let resolution = possibilities |> Seq.length |> float |> Math.Sqrt |> int
     let tileArray = Array2D.zeroCreate<Tile option> resolution resolution
     let res = backTrack possibilities tileArray
-    // let findMatching = possibilities |> 
     let topLeft = (Array2D.get res.Value 0 0 |> Option.get).Number |> int64
     let topRight = (Array2D.get res.Value 0 (resolution-1) |> Option.get).Number |> int64
     let bottomLeft = (Array2D.get res.Value (resolution-1) 0 |> Option.get).Number |> int64
     let bottomRight = (Array2D.get res.Value (resolution-1) (resolution-1) |> Option.get).Number |> int64
-    topLeft * topRight * bottomLeft * bottomRight
+    (topLeft * topRight * bottomLeft * bottomRight, res)
 
-let printTile (tile:Tile) = 
+let printTile (grid:char[,]) = 
     printfn "%s" ""
-    for r = 0 to Array2D.length1 tile.Grid - 1 do
+    for r = 0 to Array2D.length1 grid - 1 do
         printfn "%s" ""
-        for c = 0 to Array2D.length2 tile.Grid - 1 do
-            printf "%c" tile.Grid.[r, c]
+        for c = 0 to Array2D.length2 grid - 1 do
+            printf "%c" grid.[r, c]
+
+let takeWithoutBorders (grid:'a[,]) = 
+    let size = (grid |> Array2D.length1) - 2
+    let res = Array2D.init size size (fun x y -> Array2D.get grid (x+1) (y+1))
+    res
+
+let merge (grid:'a[,][,]) =
+    let lenOfGrid = grid |> Array2D.length1
+    let lenOfInnerGrid = Array2D.get grid 0 0 |> Array2D.length1
+    let totalRowsCols = lenOfGrid * lenOfInnerGrid
+    let res = Array2D.zeroCreate<'a> totalRowsCols totalRowsCols
+    grid |> Array2D.iteri(fun x y e ->
+                            let xModifier = x * lenOfInnerGrid
+                            let yModifier = y * lenOfInnerGrid
+                            e |> Array2D.iteri(fun innerX innerY innerE -> 
+                                                        let xModified = innerX + xModifier
+                                                        let yModified = innerY + yModifier
+                                                        Array2D.set res xModified yModified innerE
+                                )
+                            )
+    res
+
+let monsterFields = 
+    [(0,18);(1,0);(1,5);(1,6);(1,11);(1,12);(1,17);(1,18);(1,19);(2,1);(2,4);(2,7);(2,10);(2,13);(2,16)]
+
+let detectMonster (grid:char[,]) =
+    let len = grid |> Array2D.length1
+    let containsMonster x y =
+        if (len-x)<3 then false
+        elif (len-y)<20 then false
+        else
+            let cnt = monsterFields 
+                        |> List.map(fun (dx,dy) -> (x+dx,y+dy))
+                        |> List.map(fun (posX,posY) -> Array2D.get grid posX posY)
+                        |> List.filter(fun x -> x = '#')
+                        |> List.length 
+            cnt = monsterFields.Length
+    let mutable monsterCount = 0
+    grid |>  Array2D.iteri(fun x y e ->
+                                let isMonster = containsMonster x y
+                                if isMonster then
+                                    monsterCount <- monsterCount + 1) 
+    monsterCount
 
 let solution1 () =
     let tiles = getMappedInput()
     let possibilities = getMappedInput() |> Array.map(fun x -> (x.Number,mapTilesToPossibilities x))
     let res = solve possibilities
-    res
+    fst res
 
 let solution2 () =
-    0
+    let tiles = getMappedInput()
+    let possibilities = getMappedInput() |> Array.map(fun x -> (x.Number,mapTilesToPossibilities x))
+    let (_,res) = solve possibilities
+    let grid = res.Value |> Array2D.map(fun x -> x.Value.Grid |> takeWithoutBorders)
+    let merged = merge grid
+    let allPossibilities = mapTilesToPossibilities {Number= 666; Grid = merged }
+    let monsterCount = allPossibilities |> Seq.map(fun e -> detectMonster e.Grid) |> Seq.max
+    let monsterTileCont = monsterFields |> List.length |> (*) monsterCount
+    let mutable hashCount = 0
+    merged |> Array2D.iter(fun e -> if e = '#' then hashCount <- hashCount + 1)
+    hashCount - monsterTileCont
